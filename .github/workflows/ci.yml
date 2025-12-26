@@ -27,7 +27,7 @@ jobs:
           pip --version
           ls -la
           ls -la MLProject
-          test -f MLProject/MLproject && echo "OK: MLProject/MLproject exists" || (echo "ERROR: MLProject/MLproject missing" && exit 1)
+          test -f MLProject/MLProject && echo "OK: MLProject/MLproject exists" || (echo "ERROR: MLProject/MLproject missing" && exit 1)
           test -f MLProject/modelling.py && echo "OK: MLProject/modelling.py exists" || (echo "ERROR: modelling.py missing" && exit 1)
           test -f MLProject/glass_clean.csv && echo "OK: dataset exists" || (echo "ERROR: glass_clean.csv missing" && exit 1)
 
