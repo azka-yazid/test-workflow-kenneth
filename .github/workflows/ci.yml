@@ -22,11 +22,15 @@ jobs:
         shell: bash -l {0}
         run: |
           conda --version
-          python --version         
-          ls -la
+          python --version
           ls -la MLProject
           cat MLProject/MLProject
-          
+
+      - name: Install MLflow in base env
+        shell: bash -l {0}
+        run: |
+          pip install mlflow==3.8.0
+          mlflow --version
 
       - name: Run MLflow Project (re-train)
         shell: bash -l {0}
