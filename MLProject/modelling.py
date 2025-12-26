@@ -13,8 +13,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-mlflow.set_experiment("MSML-Glass-CI")
-
+# load
 df = pd.read_csv("glass_clean.csv")
 X = df.drop(columns=["Type"])
 y = df["Type"]
