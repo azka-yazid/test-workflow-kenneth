@@ -1,0 +1,56 @@
+name: CI - MLflow Project Retrain
+
+on:
+  push:
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up job
+        run: echo "Starting CI job..."
+
+      - name: Run actions/checkout@v3
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.12.7
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.7"
+
+      - name: Check Env
+        run: |
+          python --version
+          pip --version
+          ls -la
+          ls -la MLProject
+          test -f MLProject/MLproject && echo "OK: MLProject/MLproject exists" || (echo "ERROR: MLProject/MLproject missing" && exit 1)
+          test -f MLProject/modelling.py && echo "OK: MLProject/modelling.py exists" || (echo "ERROR: modelling.py missing" && exit 1)
+          test -f MLProject/glass_clean.csv && echo "OK: dataset exists" || (echo "ERROR: glass_clean.csv missing" && exit 1)
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mlflow pandas numpy scikit-learn matplotlib joblib
+
+      - name: Run mlflow project
+        run: |
+          mlflow --version
+          mlflow run MLProject
+
+      - name: Get latest MLflow run_id
+        run: |
+          python - << 'PY'
+          import os, glob, re
+          runs = glob.glob("mlruns/*/*/meta.yaml")
+          if not runs:
+            raise SystemExit("No MLflow runs found. Check if 'mlflow run MLProject' succeeded.")
+          runs.sort(key=os.path.getmtime, reverse=True)
+          meta = open(runs[0], "r", encoding="utf-8").read()
+          m = re.search(r"run_id:\s*([a-f0-9]+)", meta)
+          print("LATEST_RUN_ID =", m.group(1) if m else "NOT_FOUND")
+          print("META_PATH =", runs[0])
+          PY

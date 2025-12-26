@@ -1,8 +1,5 @@
-name: glass-retraining-project
-
-conda_env: conda.yaml
+name: glass-ci
 
 entry_points:
   main:
-    command: >
-      python modelling.py
+    command: "python modelling.py"
