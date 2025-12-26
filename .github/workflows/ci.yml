@@ -22,13 +22,11 @@ jobs:
         shell: bash -l {0}
         run: |
           conda --version
-          python --version
-          pip --version         
+          python --version         
           ls -la
           ls -la MLProject
           cat MLProject/MLProject
-          test -f MLProject/MLProject && echo "OK: MLProject/MLProject exists" || (echo "ERROR: MLProject/MLProject missing" && exit 1)
-          test -f MLProject/modelling.py && echo "
+          
 
       - name: Run MLflow Project (re-train)
         shell: bash -l {0}
